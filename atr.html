@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ATR GIS</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/portfolio-item.css" rel="stylesheet">
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.17.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.17.0/mapbox-gl.css' rel='stylesheet' />
+
+
+
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">ATR GIS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+<div class="panel">
+  <button type="button" class="slide-toggle btn btn-default btn-lg pnl">
+    <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+  </button>
+  <button type="button" class="slide-toggle2 btn btn-default btn-lg pnl">
+    <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+  </button>
+</div>
+<div class="panel-box">
+  <!-- <button type="button" class="slide-toggle">Slide Toggle</button> -->
+    <div class="box">
+        <div class="box-inner">
+          <div class="judul-tool thumbnail">Color 1 <a style="float:right;"><button class="slide-toggle btn btn-danger">X</button></a></div>
+            <div>
+              <div class="col-lg-6">
+              Warna Isi : <br> <input class="jscolor" value="#ab2567">
+              </div>
+              <div class="col-lg-6">
+              <p>transparent isi <a id="output"></a></p>
+              <input type="range" id="slider" value="5" name="range">
+              </div>
+            </div>
+
+            <div>
+              <div class="col-lg-6">
+              Warna Tepi : <br> <input class="jscolor" value="#000">
+              </div>
+              <div class="col-lg-6">
+              <p>Ketebalan Tepi <a id="output2"></a></p>
+              <input type="range" id="slider2" value="5" name="range">
+              </div>
+            </div>
+            
+
+            <form action="#" method="POST">
+              <div>
+                Label: <input type="checkbox" id="trigger" name="question">
+              </div>
+
+              <div id="hidden_fields">
+                <div class="col-lg-6">
+                  <select style="margin-top:5px;"class='form-control second thumbnail'>
+                    <option value='1'><a data-toggle="pill" href="#stool">gid</a></option>
+                    <option value='1'>id</option>
+                    <option value='1'>Keterangan</option>
+                    <option value='1'>Luas</option>
+                    <option value='1'>The_geom</option>
+                  </select>
+                </div>
+                <div class="col-lg-6">
+                  <select style="margin-top:5px;"class='form-control second thumbnail'>
+                    <option value='1'><a data-toggle="pill" href="#stool">point</a></option>
+                    <option value='1'>Line</option>
+                  </select>
+                </div>
+
+                <ul class="nav nav-pills">
+                  <li class="active"><a data-toggle="pill" href="#font">Font</a></li>
+                  <li><a data-toggle="pill" href="#tepi">Border</a></li>
+                  <li><a data-toggle="pill" href="#posisi">Posisi</a></li>
+                </ul>
+
+                <div class="tab-content">
+                  <div id="font" class="tab-pane fade in active">
+                    <div class="thumbnail" style="margin-top:10px;">
+                      Ukuran Font <a id="outputfont"></a></p>
+                      <input type="range" id="sliderfont" value="5" name="range">
+                      Warna Font : &nbsp <input class="jscolor" value="#00f">
+                    </div>
+                  </div>
+                  <div id="tepi" class="tab-pane fade">
+                    <div class="thumbnail" style="margin-top:10px;">
+                      Ketebalan Tepi <a id="outputtepi"></a></p>
+                      <input type="range" id="slidertepi" value="5" name="range">
+                      Warna Tepi : &nbsp <input class="jscolor" value="#00f">
+                    </div>
+                  </div>
+                  <div id="posisi" class="tab-pane fade">
+                    <div class="thumbnail" style="margin-top:10px;">
+                      Horizontal <a id="outputhorizontal"></a></p>
+                      <input type="range" id="sliderhorizontal" value="5" name="range">
+                      Vertical <a id="outputvertical"></a></p>
+                      <input type="range" id="slidervertical" value="5" name="range">
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </form>
+
+            <!-- <ul class="nav nav-pills">
+              <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
+              <li><a data-toggle="pill" href="#menu1">Menu 1</a></li>
+            </ul> -->
+        </div>
+    </div>
+    <div class="box2">
+        <div class="box-inner">
+          <div class="judul-tool thumbnail">Color 2 <a style="float:right;"><button class="slide-toggle2 btn btn-danger">X</button></a></div>
+        </div>
+    </div>
+</div>
+
+<!-- <iframe class="maps" frameborder="0" src="https://joblinggar.cartodb.com/viz/2462f014-0154-11e6-8ed7-0e31c9be1b51/embed_map" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe> -->
+<div id='map'></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoibGluZ2dhcmJhZ29sIiwiYSI6ImNpbXpwazA3MzA0eWd1bm00aDNhdmdmMW8ifQ.gSibogz4fnmcpBBP28hJNQ';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v8', //stylesheet location
+    center: [-74.50, 40], // starting position
+    zoom: 9 // starting zoom
+});
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      var box = $('.box');
+      $(box).hide();
+
+        $(".slide-toggle").click(function(){
+          // $(".box").hide();
+            $(".box").animate({
+                            direction: 'right',
+                width: "toggle"
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      var box2 = $('.box2');
+      $(box2).hide();
+
+        $(".slide-toggle2").click(function(){
+          // $(".box").hide();
+            $(".box2").animate({
+                            direction: 'right',
+                width: "toggle"
+            });
+        });
+    });
+</script>
+<script>
+$(function(){
+    var val = $('#slider').val();
+        output  = $('#output');
+
+    output.html(val);
+
+    $('#slider').change(function(){
+        output.html(this.value);
+    });
+
+});
+</script>
+<script>
+$(function(){
+    var val = $('#slider2').val();
+        output2  = $('#output2');
+
+    output2.html(val);
+
+    $('#slider2').change(function(){
+        output2.html(this.value);
+    });
+
+});
+</script>
+<script>
+$(function(){
+    var val = $('#sliderfont').val();
+        outputfont  = $('#outputfont');
+
+    outputfont.html(val);
+
+    $('#sliderfont').change(function(){
+        outputfont.html(this.value);
+    });
+
+});
+</script>
+<script>
+$(function(){
+    var val = $('#slidertepi').val();
+        outputtepi  = $('#outputtepi');
+
+    outputtepi.html(val);
+
+    $('#slidertepi').change(function(){
+        outputtepi.html(this.value);
+    });
+
+});
+</script>
+
+<script>
+$(function(){
+    var val = $('#sliderhorizontal').val();
+        outputhorizontal  = $('#outputhorizontal');
+
+    outputhorizontal.html(val);
+
+    $('#sliderhorizontal').change(function(){
+        outputhorizontal.html(this.value);
+    });
+
+});
+</script>
+<script>
+$(function(){
+    var val = $('#slidervertical').val();
+        outputvertical  = $('#outputvertical');
+
+    outputvertical.html(val);
+
+    $('#slidervertical').change(function(){
+        outputvertical.html(this.value);
+    });
+
+});
+</script>
+
+<script>
+$(function() {
+
+  // Get the form fields and hidden div
+  var checkbox = $("#trigger");
+  var hidden = $("#hidden_fields");
+  var populate = $("#populate");
+
+  // Hide the fields.
+  // Use JS to do this in case the user doesn't have JS
+  // enabled.
+  hidden.hide();
+
+  // Setup an event listener for when the state of the
+  // checkbox changes.
+  checkbox.change(function() {
+    // Check to see if the checkbox is checked.
+    // If it is, show the fields and populate the input.
+    // If not, hide the fields.
+    if (checkbox.is(':checked')) {
+      // Show the hidden fields.
+      hidden.show();
+      // Populate the input.
+      populate.val("Dude, this input got populated!");
+    } else {
+      // Make sure that the hidden fields are indeed
+      // hidden.
+      hidden.hide();
+
+    }
+  });
+});
+</script>
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+    <script src="js/jscolor.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

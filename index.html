@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ATR GIS</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/portfolio-item.css" rel="stylesheet">
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="js/jquery-1.9.1.js"></script>
+    <!-- <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script> -->
+    <link href="css/bootstrap-switch.css" rel="stylesheet">
+    <link href="css/bootstrap-editable.css" rel="stylesheet">
+    <script src="js/bootstrap-editable.min.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.17.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.17.0/mapbox-gl.css' rel='stylesheet' />
+
+
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; position: fixed;}
+    </style>
+
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">ATR GIS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+<div class="panel">
+  <button type="button" class="slide-toggle btn btn-default btn-lg pnl">
+    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+  </button>
+  <button type="button" class="slide-toggle2 btn btn-default btn-lg pnl">
+    <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+  </button>
+  <button type="button" class="slide-toggle3 btn btn-default btn-lg pnl">
+    <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+  </button>
+</div>
+<div class="panel-box">
+  <!-- <button type="button" class="slide-toggle">Slide Toggle</button> -->
+    <div class="box">
+        <div class="box-inner">
+          <button data-toggle="pill" href="#basic" type="button" class="btn btn-default" aria-label="Left Align">
+            <span>Basic</span>
+          </button>
+          <button data-toggle="pill" href="#chloroplete" type="button" class="btn btn-default" aria-label="Left Align">
+            <span>Chloroplete</span>
+          </button>
+          <button data-toggle="pill" href="#category" type="button" class="btn btn-default" aria-label="Left Align">
+            <span>Category</span>
+          </button>
+          <button style="float:right;"class="slide-toggle btn btn-danger">X</button>
+
+          <div class="tab-content">
+            <div id="basic" class="tab-pane fade in active">
+              <table style="margin-top:10px; "class="table">
+                <tbody>
+                  <tr>
+                    <td>Warna Isi : </td>
+                    <td class="kanan">
+                      <span>
+                          <input onchange="warnaisi(this.jscolor)" id="wrisi" class="jscolor {closable:true,closeText:'Close'}">
+                      </span>
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0.1"min="0" max="1" name="my-num" step="0.1" id="with-step"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Warna Tepi : </td>
+                    <td class="kanan">
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" ="my-num" step="0.1" id="with-step"/>
+                      <span>
+                          <input onchange="warnatepi(this.jscolor)" id="wrtepi" class="jscolor {closable:true,closeText:'Close'}">
+                      </span>
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" name="my-num" step="0.1" id="with-step"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Ketebalan Tepi : </td>
+                    <td class="kanan">
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" ="my-num" step="0.1" id="with-step"/>
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" name="my-num" step="0.1" id="with-step"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table">
+              <thead>
+                <tr>
+                  <th width="40%" >Label: <input type="checkbox" id="trigger" name="question"></th>
+                  <th class="kanan"></th>
+                </tr>
+              </thead>
+              <tbody id="hidden_fields">
+                <tr>
+                  <td>
+
+                  </td>
+                  <td class="kanan">
+                    <select>
+                      <option value='1'><a data-toggle="pill" href="#stool">gid</a></option>
+                      <option value='1'>id</option>
+                      <option value='1'>Keterangan</option>
+                      <option value='1'>Luas</option>
+                      <option value='1'>The_geom</option>
+                    </select>
+                    <select>
+                      <option value='1'><a data-toggle="pill" href="#stool">point</a></option>
+                      <option value='1'>Line</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Font : </td>
+                  <td class="kanan">
+                    <span>
+                        <input onchange="warnafont(this.jscolor)" id="wrfont" class="jscolor {closable:true,closeText:'Close'}">
+                    </span>
+                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" name="my-num" step="0.1" id="with-step"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ketebalan Tepi : </td>
+                  <td class="kanan">
+                    <span>
+                        <input onchange="tebaltepi(this.jscolor)" id="wrfont" class="jscolor {closable:true,closeText:'Close'}">
+                    </span>
+                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" name="my-num" step="0.1" id="with-step"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Posisi : </td>
+                  <td class="kanan">
+                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" name="my-num" step="0.1" id="with-step"/>
+                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" name="my-num" step="0.1" id="with-step"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+
+    <!-- =======CHLOROPLETE=========== -->
+            <div id="chloroplete" class="tab-pane fade">
+              <table style="margin-top:10px;"class="table">
+                <tbody>
+                  <tr>
+                    <td>Kolom : </td>
+                    <td class="kanan">
+                      <select class='form-contwrol'>
+                        <option value='1'>Names</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Bucket : </td>
+                    <td class="kanan">
+                      <select>
+                        <option value='1'>3</option>
+                        <option value='1'>5</option>
+                        <option value='1'>7</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Kuantifikasi : </td>
+                    <td class="kanan">
+                      <select>
+                        <option value='1'>Jenks</option>
+                        <option value='1'>Equal</option>
+                        <option value='1'>Head / Tails</option>
+                        <option value='1'>Quantile</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Warna Gradasi : </td>
+                    <td class="kanan">
+                      <button type="button" class="btn btn-xs btn-default" data-toggle="collapse" data-target="#demo">pilih warna <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+                      <div >
+
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr id="demo" class="collapse">
+                    <td>
+                      <div style="text-align:left;">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+                            <div class="gradient1"></div>
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                            <div class="gradient2"></div>
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+                            <div class="gradient3"></div>
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                            <div class="gradient7"></div>
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+                            <div class="gradient8"></div>
+                          </label>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="col-lg-6"style="text-align:left;">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+                            <div class="gradient4"></div>
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                            <div class="gradient5"></div>
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+                            <div class="gradient6"></div>
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                            <div class="gradient9"></div>
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+                            <div class="gradient10"></div>
+                          </label>
+                        </div>
+                      </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Polygon Stroke : </td>
+                    <td class="kanan">
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                      <span>
+                          <input onchange="polygonstroke(this.jscolor)" id="plgstroke" class="jscolor {closable:true,closeText:'Close'}">
+                      </span>
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Composite Operation : </td>
+                    <td class="kanan">
+                      <select>
+                        <option value='1'>Lighten</option>
+                        <option value='1'>Screen</option>
+                        <option value='1'>Overlay</option>
+                        <option value='1'>Multiple</option>
+                        <option value='1'>Darken</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table">
+              <thead>
+                <tr>
+                  <th width="40%" >Label: <input type="checkbox" id="trigger2" name="question"></th>
+                  <th class="kanan"></th>
+                </tr>
+              </thead>
+              <tbody id="hidden_fields2">
+                <tr>
+                  <td>Label Text : </td>
+                  <td class="kanan">
+                    <select class='form-constrol'>
+                      <option value='1'>None</option>
+                      <option value='1'>Description</option>
+                      <option value='1'>Name</option>
+                    </select>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Font : </td>
+                  <td class="kanan">
+                    <select>
+                      <option value='1'>Arial</option>
+                      <option value='1'>Lato</option>
+                      <option value='1'>Arial Black</option>
+                      <option value='1'>Impact</option>
+                      <option value='1'>Calibri</option>
+                    </select>
+                    <span>
+                        <input onchange="labelfont(this.jscolor)" id="lblfont" class="jscolor {closable:true,closeText:'Close'}">
+                    </span>
+                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Label Halo : </td>
+                  <td class="kanan">
+                    <span>
+                        <input onchange="labelhalo(this.jscolor)" id="lblhalo" class="jscolor {closable:true,closeText:'Close'}">
+                    </span>
+                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Label Offset : </td>
+                  <td class="kanan">
+                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Label Overlap : </td>
+                  <td class="kanan">
+                    <select>
+                      <option value='1'>True</option>
+                      <option value='1'>False</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Label Placement : </td>
+                  <td class="kanan">
+                    <select>
+                      <option value='1'>Point</option>
+                      <option value='1'>Line</option>
+                      <option value='1'>Vertex</option>
+                      <option value='1'>Interior</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+
+    <!-- ======CATEGORY======= -->
+            <div id="category" class="tab-pane fade">
+              <table style="margin-top:10px; "class="table">
+                <tbody>
+                  <tr>
+                    <td>Kolom : </td>
+                    <td class="kanan">
+                      <select>
+                        <option value='1'>Names</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Polygon Fill : </td>
+                    <td class="kanan">
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Polygon Stroke : </td>
+                    <td class="kanan">
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                      <span>
+                          <input onchange="polygonstroke2(this.jscolor)" id="plgstroke" class="jscolor {closable:true,closeText:'Close'}">
+                      </span>
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1 : </td>
+                    <td class="kanan">
+                      <span>
+                          <input onchange="selected(this.jscolor)" id="slctd" class="jscolor {closable:true,closeText:'Close'}">
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+    </div>
+
+    <!-- ==========BOX 2================= -->
+
+    <div class="box2">
+        <div class="box-inner">
+          <table class="table">
+          <thead>
+            <tr>
+              <th width="50%" >Legenda</th>
+              <th class="kanan"><button class="slide-toggle2 btn btn-danger">X</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tema : </td>
+              <td class="kanan">
+                <select class='form-contwrol'>
+                  <option value='1'>None</option>
+                  <option value='1'>Custom</option>
+                  <option value='1'>Choropleth</option>
+                  <option value='1'>Category</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>Judul : </td>
+              <td class="kanan">
+                <label class="checkbox-inline"><input type="checkbox" value="">Show</label>
+                <a href="#" id="deskripsi" data-type="text" data-pk="1"  data-title="deskripsi1">test</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>
+                    <input onchange="selected(this.jscolor)" id="slctd" class="jscolor {closable:true,closeText:'Close'}">
+                </span>
+               </td>
+              <td class="kanan">
+                <a href="#" id="username" data-type="text" data-pk="1"  data-title="warna1">legenda 1</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="box3">
+
+        <div class="box-inner">
+          <button data-toggle="pill" href="#click" type="button" class="btn btn-default" aria-label="Left Align">
+            <span>Click</span>
+          </button>
+          <button data-toggle="pill" href="#hover" type="button" class="btn btn-default" aria-label="Left Align">
+            <span>Hover</span>
+          </button>
+          <button style="float:right;"class="slide-toggle3 btn btn-danger">X</button>
+          <div class="tab-content">
+            <div id="click" class="tab-pane fade in active">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value='1'>Light</option>
+                        <option value='1'>Dark</option>
+                        <option value='1'>Header Blue</option>
+                        <option value='1'>Header Green</option>
+                        <option value='1'>Header Yellow</option>
+                      </select>
+                    </td>
+                    <td class="kanan">
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Description 1 :
+                    </td>
+                    <td class="kanan">
+                      <div class="col-md-8">
+                        <div class="tampil"> <input type="checkbox" name="question">Title? </div>
+                        <a class="tampil" style="display: none"></a>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="onoffswitch">
+                          <div class="onoffswitch">
+                              <input type="checkbox" name="onoffswitch" class="mychekbx onoffswitch-checkbox" id="myonoffswitch" checked>
+                              <label class="onoffswitch-label" for="myonoffswitch">
+                                  <span class="onoffswitch-inner"></span>
+                                  <span class="onoffswitch-switch"></span>
+                              </label>
+                          </div>
+                        </div>
+
+                      </div>
+                    </td>
+                  </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+
+            <div id="hover" class="tab-pane fade">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value='1'>Light</option>
+                        <option value='1'>Dark</option>
+                        <option value='1'>Header Blue</option>
+                        <option value='1'>Header Green</option>
+                        <option value='1'>Header Yellow</option>
+                      </select>
+                    </td>
+                    <td class="kanan">
+                      <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" value="0"min="0" max="1" class="form-constrol" name="my-num" step="0.1" id="with-step"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Description hover :
+                    </td>
+                    <td class="kanan">
+                      <div class="col-md-8">
+                        <div class="tampil2"> <input type="checkbox" name="question">Title? </div>
+                        <a class="tampil2" style="display: none"></a>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="onoffswitch">
+                          <div class="onoffswitch">
+                              <input type="checkbox" name="onoffswitch2" class="mychekbx2 onoffswitch-checkbox" id="myonoffswitch2" checked>
+                              <label class="onoffswitch-label" for="myonoffswitch2">
+                                  <span class="onoffswitch-inner"></span>
+                                  <span class="onoffswitch-switch"></span>
+                              </label>
+                          </div>
+                        </div>
+
+                      </div>
+                    </td>
+                  </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- ======== BOX 3 ======= -->
+
+
+
+<!-- <iframe class="maps" frameborder="0" src="https://joblinggar.cartodb.com/viz/2462f014-0154-11e6-8ed7-0e31c9be1b51/embed_map" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe> -->
+<div id='map'></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoibGluZ2dhcmJhZ29sIiwiYSI6ImNpbXpwazA3MzA0eWd1bm00aDNhdmdmMW8ifQ.gSibogz4fnmcpBBP28hJNQ';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v8', //stylesheet location
+    center: [-74.50, 40], // starting position
+    zoom: 9 // starting zoom
+});
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      var box = $('.box');
+      $(box).hide();
+
+        $(".slide-toggle").click(function(){
+          // $(".box").hide();
+            $(".box").animate({
+                            direction: 'right',
+                width: "toggle"
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      var box2 = $('.box2');
+      $(box2).hide();
+
+        $(".slide-toggle2").click(function(){
+          // $(".box").hide();
+            $(".box2").animate({
+                            direction: 'right',
+                width: "toggle"
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      var box3 = $('.box3');
+      $(box3).hide();
+
+        $(".slide-toggle3").click(function(){
+          // $(".box").hide();
+            $(".box3").animate({
+                            direction: 'right',
+                width: "toggle"
+            });
+        });
+    });
+</script>
+<script>
+$( ".mychekbx" ).click(function() {
+  $( ".tampil" ).toggle();
+});
+</script>
+<script>
+$( ".mychekbx2" ).click(function() {
+  $( ".tampil2" ).toggle();
+});
+</script>
+<script>
+$(function() {
+  var checkbox = $("#trigger");
+  var hidden = $("#hidden_fields");
+  var populate = $("#populate");
+  hidden.hide();
+  checkbox.change(function() {
+    if (checkbox.is(':checked')) {
+      // Show the hidden fields.
+      hidden.show();
+      // Populate the input.
+      populate.val("Dude, this input got populated!");
+    } else {
+      hidden.hide();
+    }
+  });
+});
+</script>
+<script>
+$(function() {
+  var checkbox = $("#trigger2");
+  var hidden = $("#hidden_fields2");
+  var populate = $("#populate");
+  hidden.hide();
+  checkbox.change(function() {
+    if (checkbox.is(':checked')) {
+      // Show the hidden fields.
+      hidden.show();
+      // Populate the input.
+      populate.val("Dude, this input got populated!");
+    } else {
+      hidden.hide();
+    }
+  });
+});
+</script>
+<script>
+$(document).ready(function(){
+    $(".tgl-gradasi").click(function(){
+        $(".isi-gradasi").fadeIn();
+    });
+});
+</script>
+<script>
+$('#with-step').on('change keyup', function(event) {
+    if ( event.target.validity.valid ) {
+        $('#test2').text($(this).val());
+    } else {
+        $('#test2').text('NOPE');
+    }
+});
+</script>
+<script>
+$(document).ready(function() {
+    $('.eip .eip-text').edit_in_place({}, function() {
+        var $this = $(this);
+        $this.animate({'backgroundColor': 'orange'}, {'duration': 300, 'queue': false, 'complete': function() {
+            $this.animate({'backgroundColor': 'white'}, {'duration': 300, 'queue': false});
+        }});
+    });
+});
+</script>
+<script>
+$.fn.editable.defaults.mode = 'inline';
+$(document).ready(function() {
+    $('#username').editable();
+    $('#deskripsi').editable();
+});
+$('#username').editable({
+    type: 'text',
+    pk: 1,
+    // url: '/post',
+    title: 'warna1'
+});
+$('#deskripsi').editable({
+    type: 'text',
+    pk: 1,
+    // url: '/post',
+    title: 'warna1'
+});
+</script>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+    <script src="js/jscolor.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+<script>
+function warnatepi(color){
+  console.log(color.toHEXString());
+}
+function warnaisi(color){
+  console.log(color.toHEXString());
+}
+function warnafont(color){
+  console.log(color.toHEXString());
+}
+function tebaltepi(color){
+  console.log(color.toHEXString());
+}
+function polygonstroke(color){
+  console.log(color.toHEXString());
+}
+function labelfont(color){
+  console.log(color.toHEXString());
+}
+function labelhalo(color){
+  console.log(color.toHEXString());
+}
+function labeloffset(color){
+  console.log(color.toHEXString());
+}
+function polygonstroke2(color){
+  console.log(color.toHEXString());
+}
+function selected(color){
+  console.log(color.toHEXString());
+}
+</script>
+</body>
+
+</html>
